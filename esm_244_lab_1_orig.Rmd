@@ -29,6 +29,22 @@ library(tmap)
 wine <- read_csv("wine_data.csv")
 ```
 
+##### b. Wrangle data.
+```{r wrangling}
+#### make new data set ####
+# use original data set wine
+wine_new <- wine %>%
+  # select desired columns
+  select(country, province, winery, region_1, points, price) %>% 
+  # rename province column name to state
+  rename(state = province) %>%
+  # filter rows to only include California data
+  filter(state == "California")
+
+
+
+
+```
 
 
 
