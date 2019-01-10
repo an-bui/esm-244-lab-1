@@ -1,0 +1,45 @@
+---
+title: "Lab 1"
+author: "An Bui"
+date: "10 January 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Objectives:
+
+- basic review (data wrangling)  
+- intro to spatial data in R with `sf`  
+- intro to Shiny apps  
+
+#### 1. Attach packages
+```{r set up packages, include = FALSE}
+library(tidyverse)
+library(sf)
+library(leaflet)
+library(tmap)
+```
+
+#### 2. Review: reading, exploring, warngling, visualizing data
+##### a. Read in data.
+```{r read in wine data, include = FALSE}
+wine <- read_csv("wine_data.csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
