@@ -30,7 +30,7 @@ wine <- read_csv("wine_data.csv")
 ```
 
 ##### b. Wrangle data.
-```{r wrangling}
+```{r wrangling, include = FALSE}
 #### make new data set ####
 # use original data set wine
 wine_new <- wine %>%
@@ -38,16 +38,40 @@ wine_new <- wine %>%
   select(country, province, winery, region_1, points, price) %>% 
   # rename province column name to state
   rename(state = province) %>%
-  # filter rows to only include California data
-  filter(state == "California")
+  # filter rows to only include California, Oregon, and Washington data
+  filter(state == "California" |
+           state == "Oregon" |
+           state == "Washington") %>% 
+  # add column for best price per points
+  mutate(ppd = points/price) %>% 
+  # arrange by decreasing points/dollar
+  arrange(-ppd)
+```
+
+##### c. Use group_by() and summarize() to find summary statistics by group.
+```{r summary statistics}
+# make summary table from wine_new
+wine_summary <- wine_new %>% 
+  # create groups by state
+  # btw you can group_by() for multiple columns
+  group_by(state) %>% 
+  # summary statistics, remove any NA values
+  summarize(
+    mean_ppd = mean(ppd, na.rm = TRUE),
+    max_ppd = max(ppd, na.rm = TRUE)
+  )
+```
+
+##### d. Visualize data.
+```{r create plots, echo = FALSE}
+
+
+
 
 
 
 
 ```
-
-
-
 
 
 
