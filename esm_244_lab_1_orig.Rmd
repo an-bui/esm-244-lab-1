@@ -97,7 +97,7 @@ wine_points
 
 #### 2. California counties spatial data using `sf`
 All file types are important info within the spatial data (descriptions in key).
-```{r spatial data files, include = FALSE}
+```{r set up spatial data data frame, include = FALSE}
 #### call all files ####
 # use st_read to read in files
 ca_counties <- st_read(
@@ -110,14 +110,39 @@ ca_counties <- st_read(
 ca_land <- ca_counties %>% 
   select(NAME, ALAND)
 
-#### add in population data ####
+#### add in population data to ca_land data frame ####
 ca_pop_inc <- read_csv("ca_pop_inc.csv") %>% 
   # rename column to NAME to match ca_land
   rename(NAME = COUNTY)
 
-
+# make new data frame using full_join()
+# use instead of join() because it doesn't get rid of anything
+ca_df <- full_join(ca_land, ca_pop_inc) %>% 
+  # select columns desired
+  select(NAME, MedFamilyIncome)
 ```
 
+##### d. Use geom_sf to make a map in ggplot
+```{r make a map, echo = FALSE}
+#### make a map ####
+# make new map, use ggplot, use ca_df
+ca_income <- ggplot(ca_df) +
+  # make a map, fill based on MedFamilyIncome
+  geom_sf(aes(fill = MedFamilyIncome))
+
+ca_income
+
+#### use leaflet to overlay this on another map ####
+# transform to use a different coordinate reference system
+ca_df_transform <- st_transform(ca_df, crs = 4326)
+
+# use leaflet
+leaflet(ca_df_transform) %>% 
+  addTiles() %>% 
+  addPolygons()
+# creates interactive map with polygons
+
+```
 
 
 
