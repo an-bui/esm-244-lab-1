@@ -95,6 +95,46 @@ wine_points <- ggplot(wine_new, aes(x = price, y = points)) +
 wine_points
 ```
 
+#### 2. California counties spatial data using `sf`
+All file types are important info within the spatial data (descriptions in key).
+```{r spatial data files, include = FALSE}
+#### call all files ####
+# use st_read to read in files
+ca_counties <- st_read(
+  # set working directory (which you're already in)
+  dsn = ".", 
+  # call all files that start with CA_Counties_TIGER2016
+  layer = "CA_Counties_TIGER2016")
+
+#### select county, land columns ####
+ca_land <- ca_counties %>% 
+  select(NAME, ALAND)
+
+#### add in population data ####
+ca_pop_inc <- read_csv("ca_pop_inc.csv") %>% 
+  # rename column to NAME to match ca_land
+  rename(NAME = COUNTY)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
