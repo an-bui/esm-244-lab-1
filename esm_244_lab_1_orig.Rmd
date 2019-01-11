@@ -49,7 +49,7 @@ wine_new <- wine %>%
 ```
 
 ##### c. Use group_by() and summarize() to find summary statistics by group.
-```{r summary statistics}
+```{r summary statistics, echo = FALSE}
 # make summary table from wine_new
 wine_summary <- wine_new %>% 
   # create groups by state
@@ -60,17 +60,39 @@ wine_summary <- wine_new %>%
     mean_ppd = mean(ppd, na.rm = TRUE),
     max_ppd = max(ppd, na.rm = TRUE)
   )
+
+wine_summary
 ```
 
 ##### d. Visualize data.
 ```{r create plots, echo = FALSE}
+#### histogram ####
+# use ggplot, name data set, name count
+wine_hist <- ggplot(wine_new, aes(x = ppd)) +
+  # for any fill/point line where you want to base colors on variable, you have to start with aes()
+  geom_histogram(aes(fill = state)) +
+  # split graphs by state, set scales to change based on data distribution
+  facet_wrap(~state, scales = "free")
 
+wine_hist
 
+#### scatterplot of price vs points with color determined by state, adding a linear model trendline on top ####
+# make new plot using ggplot, use wine_new, name axes
+wine_points <- ggplot(wine_new, aes(x = price, y = points)) +
+  # make scatterplot, color points by state, change transparency to see points better
+  # since transparency isn't attached to a variable, put it outside the aes()
+  geom_point(aes(color = state), alpha = 0.5) +
+  # add linear model on top, using linear model (ordinary least squares linear regression), without standard error
+  geom_smooth(color = "black", method = "lm", se = FALSE) +
+  # change color scheme manually
+  # scale_color_manual() (not the other ones) because you're setting a color (from line 84, in aes())
+  scale_color_manual(values = c("royalblue", "mediumorchid1", "orange")) +
+  # separate graphs by state
+  facet_wrap(~state) +
+  # clean up plot background
+  theme_light()
 
-
-
-
-
+wine_points
 ```
 
 
